@@ -1,3 +1,168 @@
-You can create your username and password in the user table
+
+			-------------------------------------TP-php -----------------------------------------------
+	I-/ Création des table de la base de données avec des clés primaires et étrangeres ces dernieres ne sont pas obligatoires Sans phpmyadmin
+	
+	
+CREATE TABLE users(
+user_id INT (11) PRIMARY KEY AUTO_INCREMENT
+username VARCHAR(255),
+password VARCHAR(255),
+email VARCHAR (255)
+);
+CREATE TABLE brands(
+brand_id INT (11) PRIMARY KEY AUTO_INCREMENT,
+brand_name VARCHAR(255),
+brand_active INT,
+brand_status INT
+);
+
+CREATE TABLE category(
+categories_id INT (11) PRIMARY KEY AUTO_INCREMENT,
+categories_name VARCHAR(255),
+categories_active INT,
+categories_status INT
+);
+
+CREATE TABLE product(
+product_id INT (11) PRIMARY KEY AUTO_INCREMENT,
+product_name VARCHAR(255),
+product_code VARCHAR(255),
+product_image TEXT,
+brand_id INT,
+categories_id INT,
+quantity VARCHAR (255),
+rate VARCHAR (255),
+active INT,
+status INT
+);
+
+
+CREATE TABLE orders
+(
+    order_id INT (11) PRIMARY KEY AUTO_INCREMENT,
+    order_state DATE,
+    client_name VARCHAR(255),
+    client_contact VARCHAR(255),
+    sub_total VARCHAR(255),
+    vat VARCHAR(255),
+    total_amount VARCHAR(255),
+    discount VARCHAR(255),
+    grand_total VARCHAR(255),
+    paid VARCHAR(255),
+    due VARCHAR(255),
+    payment_type INT ,
+    payment_status INT,
+    order_status INT
+
+);
+
+CREATE TABLE orders_items(
+	orders_items INT (11) PRIMARY KEY AUTO_INCREMENT,
+	order_id INT,
+	product_id INT,
+	quantity VARCHAR (255),
+	rate(255),
+	total(255),
+	orders_item_status INT
+);
+
+
+ALTER TABLE product ADD FOREIGN KEY (brand_id) REFERENCES brands(brand_id);
+ALTER TABLE product ADD FOREIGN KEY (categories_id ) REFERENCES category(categories_id );
+
+ALTER TABLE orders_items ADD FOREIGN KEY (order_id) REFERENCES orders(order_id);
+ALTER TABLE orders_items ADD FOREIGN KEY (product_id ) REFERENCES products(product_id );
+
+
+
+---------------------------------------------------------------------------------------------
+II-/ Strucure et role de chaque fichiers
+	Dans l'arborescence qui suit nous présentons la structuration des fichiers du site avec tout les détails
+
+
+
+-Assets>
+	-bootstrap>
+		Qui nous permet d'ajouter du style prédefinit et responsive sur l'application
+	-font-awesome>
+		Qui nous permet de mettre de jolies icones
+	-images>
+		C'est là ou l'on stock l'image de nos produits 
+	-jquery>
+		-jquery.min.js (pour l'inter-activité du site)
+	-jqueryui> 
+		-jquery-ui.min.js(pour l'inter-activité du site et des modules pré-fabirqiqué)
+	
+	-plugins>
+		-datatables (datatables.net download files datatables.min.css datatables.min.js)
+		-fileinput (download file kajer github repo fileinput)
+		-fullcalendar (download from fullcalendar.io) Nous permet de suivre les opérations journalier mensuel et annuel
+
+-Custom>
+	-css>
+	     custom.css (nous permet de mettre notre propre style dans le site)
+	-js>
+	     brand.js 
+	     categories.php 
+             order.js 
+	     product.js 
+	     report.js 
+	     setting.js
+
+-Includes>
+	  footer.php(le pied de page du site)
+	  header.php(le barre de menu du site )
+
+-Php_action> (Dans ce dossier dossier on traite les opérations de base d'une base de données create-read-update-delete)
+	 -db_connect.php (ce fichier nous permet d'etablir une connexion)
+	 -changePassword.php (ce fichier permet à l'admin du site changer son mot de passe)
+	 -changeUsername.php (ce fichier permet à l'admin du site changer son nom d'utilisateur)
+	-core.php (ce fichier nous fait une vérification de la variable session de l'utilisateur avec l'id l'utilisateur pour prevenir les utilisateurs non authentifier oui qui    veulent se connecter à un compte qui n'est pas deconnectés apres un certains temps et renvoie vers l'authentification ./index.php pour une nouvelle session)
+		-----CREATE
+	-createBrand.php (ce fichier nous permet de creer une marque dans la table brands)
+	-createCategories.php (ce fichier nous permet de creer une nouvelle catégorie dans la table categories)
+	-createOrder.php (ce fichier nous permet de creer une nouvelle commande dans la table orders)
+	-createProduct.php (ce fichier nous permet de creer une nouvelle catégorie dans la table products)
+		-----UPDATE
+	-editBrand.php (ce fichier nous permet de modifier les informations dans la table brands)
+	-editCategories.php (ce fichier nous permet de modifier les informations d'une categorie)
+	-editOrder.php (ce fichier nous permet de modifier les informations d'une commande  dans la table orders)
+	-editPayment.php (ce fichier nous permet de modifier les informations d'un type de paiement  dans la table orders colonne  = payment_type)
+	-editProduct.php (ce fichier nous permet de modifier les informations d'un produit dans la table products)
+	-editProductImage.php (ce fichier nous permet de modifier les informations l'image d'un produit table products)
+		-----READ
+	-fetchBrand.php (Ce fichier nous permet d'afficher les marques disponibles à partir de la table brands )
+        -fetchCategories.php (Ce fichier nous permet d'afficher les catégories disponibles à partir de la table categories)
+        -fetchOrder.php (Ce fichier nous permet d'afficher les commandes disponibles à partir de la table orders)
+        -fetchOrderData.php (Ce fichier nous permet d'afficher les details de commandes  disponibles à partir de la table orders)
+        -fetchProduct.php (Ce fichier nous permet d'afficher les produits disponibles à partir de la table products)
+        -fetchProductData.php (Ce fichier nous permet d'afficher les details de produits disponibles à partir de la table products)
+        -fetchProductImageUrl.php (Ce fichier nous permet d'afficher les Images de produits disponibles à partir de la table products grace à l'url de stockage)
+        -fetchSelectedBrand.php(Ce fichier nous permet d'afficher  par ID une marque disponible à partir de la table brands )
+        -fetchSelectedCategories.php (Ce fichier nous permet d'afficher  par ID une catégorie disponible à partir de la table categories)
+        -fetchSelectedProduct.php (Ce fichier nous permet d'afficher  par ID un produit disponible à partir de la table products)
+        -getOrderReport.php (Ce fichier nous permet de faire une requete de recherche d'operation dans une intervalle de 2 date données )
+        -printOrder.php (Ce fichier nous permet d'imprimer comme facture une commande )
+        	------DELETE
+	-removeBrand.php (ce fichier nous permet de creer une marque dans la table brands)
+        -removeCategories.php (ce fichier nous permet de creer une nouvelle catégorie dans la table categories)
+        -removeOrder.php (ce fichier nous permet de creer une nouvelle commande dans la table orders)
+        -removeProduct.php (ce fichier nous permet de creer une nouvelle catégorie dans la table products)
+
+brand.php (ce fichier nous permet d'afficher tout les marques dans la table brands de modifier de supprimer une Marque et de voir sa disponibilité)
+categories.php (ce fichier nous permet d'afficher tout les catégories dans la table categories de modifier de supprimer une catégorie et de voir sa disponibilité)
+logout.php  (Ce fichier permet à l'administrateur du site de se deconnecter )
+orders.php (ce fichier nous permet d'afficher tout les commandes dans la table order de modifier de supprimer une commande et de voir sa disponibilité)
+product.php (ce fichier nous permet d'afficher tout les produits dans la table product de modifier de supprimer des produits et de voir sa disponibilité)
+report.php (ce fichier nous permet de rechercher un rapport journalier ou mensuel grace à un formulaire qui permet de choisir une intervalle de deux dates ou des operation de vente se sont déroulés )
+setting.php (Ce fichier permet à l'administrateur de réinitialiser son mot de passe)
+index.php (c'est la premiere page de vérification avant d'acceder à la page  principale du site qui permet à l'utilisateur de s'authentifier pour  etablir une premiere connexion avec la base de donnée dans phpaction/db_config.php)
+dashboard.php (Apres l'authentification l'utilisateur  à accés au site et redirigé vers la page dashboard.php et peut maintenant faire des opérations de création-affichage-modification-suppression avec la base de données 
+		Dans dashboard.php on peut s'apercevoir de l'affichage des totaux du revenus , des produits en stock des opérations récent que l'on peut visualiser avec le calendrier implémenter grace à notre plugins fullcalendar qui se trouve dans le répértoire ./plugins/fullcalendar) 	
+		Toutes ses opérations sont traitées dans notre dossier ./php_action/
+	)
+
+
+1
 
  
